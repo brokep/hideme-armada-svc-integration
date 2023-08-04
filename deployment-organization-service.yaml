@@ -1,0 +1,37 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: armada-organization-svc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: armada-organization-svc
+  template:
+    metadata:
+      labels:
+        app: armada-organization-svc
+    spec:
+      containers:
+      - name: armada-organization-svc
+        image: 467575538618.dkr.ecr.us-west-2.amazonaws.com/armada-organization-svc:latest
+        ports:
+        - containerPort: 8080
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: armada-organization-svc-lb
+  labels:
+    app: armada-organization-svc
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8080
+    targetPort: 8080
+    protocol: TCP
+    nodePort: 32600
+  selector:
+    app: armada-organization-svc

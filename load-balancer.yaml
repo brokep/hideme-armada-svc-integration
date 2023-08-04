@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: load-balancer
+  labels:
+    app: armada-global-mgmt-console
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 3000
+    targetPort: 3000
+    protocol: TCP
+    nodePort: 31000
+  selector:
+    app: armada-global-mgmt-console
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: armada-asset-svc-lb
+  labels:
+    app: armada-asset-svc
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 3030
+    targetPort: 3030
+    protocol: TCP
+    nodePort: 32500
+  selector:
+    app: armada-asset-svc    

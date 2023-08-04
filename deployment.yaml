@@ -1,0 +1,69 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: armada-global-mgmt-console
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: armada-global-mgmt-console
+  template:
+    metadata:
+      labels:
+        app: armada-global-mgmt-console
+    spec:
+      containers:
+      - name: armada-global-mgmt-console
+        image: 467575538618.dkr.ecr.us-west-2.amazonaws.com/armada-global-mgmt-console:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: ASSET_SVC_URL
+          value: http://armada-asset-svc-lb:3030
+        - name: ORGANIZATION_SVC_URL
+          value: http://armada-organization-svc-lb:8080
+
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: armada-asset-svc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: armada-asset-svc
+  template:
+    metadata:
+      labels:
+        app: armada-asset-svc
+    spec:
+      containers:
+      - name: armada-asset-svc
+        image: 467575538618.dkr.ecr.us-west-2.amazonaws.com/armada-asset-svc:latest
+        ports:
+        - containerPort: 3030
+        env:
+        - name: MONGODB_URL
+          value: mongodb://mongo-nodeport-svc:27017/collection-name
+
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: mongo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      containers:
+      - name: mongo
+        image: mongo
+        ports:
+        - containerPort: 27017        
