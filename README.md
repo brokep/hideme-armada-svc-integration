@@ -1,3 +1,8 @@
+HideMe, LLC
+hideme.dev
+
+@prolifichacker
+
 Tools Documentation/Install Docs
 * homebrew
     * https://docs.brew.sh/Installation
